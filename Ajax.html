@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<title>AJAX</title>
+
+<body>
+
+	<h2>AJAX</h2>
+	<button type="button" onclick="loadXMLDoc()">请求数据</button>
+	<button type="button" >请求数据</button>
+	<div id="clickDiv"></div>
+	<div id="testDiv"> </div>
+
+	<script>
+
+		function loadXMLDoc() {
+			var xmlhttp;
+			if (window.XMLHttpRequest) {
+				// IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+				xmlhttp = new XMLHttpRequest();
+			}
+			else {
+				// IE6, IE5 浏览器执行代码
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function () {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					document.getElementById("clickDiv").innerHTML = xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET", "./test.php", true);
+			xmlhttp.send();
+		}
+
+		//异步请求
+		//获取按钮元素
+		const button = document.getElementsByTagName("button")[0]
+		//绑定点击事件
+		button.addEventListener("click", function () {
+			//创建XMLHttpRequest对象
+			const xhr = new XMLHttpRequest()
+			//设置请求方式和请求地址
+			xhr.open("GET", "http://localhost:8000?time=" + Date.now(), true)
+			//设置请求头
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8")
+			//绑定回调函数 readyState =4 表示请求完成
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log(xhr.status)//获取响应状态码  
+						console.log(xhr.statusText)//获取响应状态
+						console.log(xhr.getAllResponseHeaders())//获取响应头
+						console.log(xhr.response)//获取响应数据
+
+						//将响应数据写入div元素	
+						document.getElementById("testDiv").innerHTML = xhr.response
+					}
+				}
+			}
+			//发送请求
+			xhr.send()
+		})
+		
+		//防抖节流 
+		let xhr = null;
+		let isSending = false;
+		//绑定键盘事件
+		document.addEventListener("keydown", function (event) {
+			//判断标识变量
+			if (isSending) xhr.abort(); //取消请求 
+			xhr = new XMLHttpRequest();
+			isSending = true;
+			//超时设置
+			xhr.timeout = 2000;
+			//绑定超时回调函数
+			xhr.ontimeout = function () {
+				alert("请求超时");
+				console.log("请求超时");
+			}
+			//网络异常
+			xhr.onerror = function () {
+				alert("网络异常");
+				console.log("网络异常");
+			}
+			xhr.open("GET", "http://localhost:8000", true);
+			xhr.responseType = "json"; //设置响应类型为json
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					isSending = false;
+					if (xhr.status === 200) {
+						//将响应数据转换为json对象
+						// let data = JSON.parse(xhr.response); 
+						// console.log(data)//json数据
+						console.log(xhr.response)//字符串数据
+						//自动转换
+						document.getElementById("testDiv").innerHTML = xhr.response.name;
+
+					}
+				}
+			}
+			xhr.send()
+		})
+
+		 //jquery
+		 $(document).ready(function () {
+			$("#btn").click(function () {
+				$.ajax({
+					url: "http://localhost:8000",
+					type: "GET",
+					dataType: "json",
+					success: function (data) {
+						console.log(data);
+						$("#testDiv").html(data.name);
+					},
+					error: function (xhr, status, error) {
+						console.log(xhr.status + " " + xhr.statusText + " " + error);
+					}
+				});
+			});
+		});	
+
+	</script>
+</body>
+
+</html>

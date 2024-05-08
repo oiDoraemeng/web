@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+
+    <p>输入数字并点击验证按钮:</p>
+
+    <input id="id1" type="number" min="100" max="300" required>
+    <button onclick="myFunction2()">验证</button>
+
+    <p>如果输入的数字小于 100 或大于300，会提示错误信息。</p>
+
+    <p id="demo"></p>
+
+    <script>
+        function myFunction() {
+            var inpObj = document.getElementById("id1");
+            if (inpObj.checkValidity() == false) {
+                document.getElementById("demo").innerHTML = inpObj.validationMessage;
+            } else {
+                document.getElementById("demo").innerHTML = "输入正确";
+            }
+        }
+        function myFunction1() {
+            var x = document.getElementById("id1");
+            x.setCustomValidity("");//使用前先取消自定义，否则下次点击checkValidity总返false
+            if (x.checkValidity() == false) {
+                x.setCustomValidity("错误");
+                document.getElementById("demo").innerHTML = x.validationMessage;
+            }
+            else {
+                x.setCustomValidity("正确");
+                document.getElementById("demo").innerHTML = x.validationMessage;
+            }
+        }
+        function myFunction2() {
+            var inpObj = document.getElementById("id1");
+            inpObj.setCustomValidity(''); // 取消自定义提示的方式
+            if (inpObj.checkValidity() == false) {
+                if (inpObj.value == "") {
+                    inpObj.setCustomValidity("不能为空！");
+                }
+                else if (inpObj.value < 100 || inpObj.value > 300) {
+                    inpObj.setCustomValidity("请重新输入数值（100~300之间）!");
+                }
+
+            }
+            else {
+                inpObj.setCustomValidity("输入正确")
+            }
+        }
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;	
+    </script>
+
+</body>
+
+</html>

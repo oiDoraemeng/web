@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="免费 Web & 编程 教程">
+    <meta name="author" content="Runoob">
+    <!--<title>元素不仅可以显示文本，也可以在左侧显示logo等图片-->
+    <link rel="shortcut icon" href="static/images/photo.png">
+    <!-- 外部样式  -->
+    <link rel="stylesheet" href="static/css/demo.css">
+    <title>学习</title>
+
+
+</head>
+
+<body>
+
+    <header id="para1">页眉 hello word </header>
+    <!--标签之段落、换行、水平线-->
+    <h1 style="text-align:center;">居中对齐的标题</h1>
+    <h1 class="color">这是一个标题1号</h1>
+    <h2>这是一个<span>标题2号</span></h2>
+    <h3 class="title">这是一个标题3号</h3>
+    <h4>合并选择器</h4>
+    <p style="font-family:arial;color:red;font-size:20px;">一个段落</p>
+    <a href="https://www.runoob.com">这是一个链接</a>
+    <p style="background-color:rgb(0, 68, 255);">如果你将 target 属性设置为 &quot;_blank&quot;, 链接将在新窗口打开。</p>
+    <a href="https://www.runoob.com/" target="_blank" rel="noopener noreferrer">访问菜鸟教程!</a>
+    <br />
+    <!--标签之图片-->
+    <img src="static/images/background.jpg" alt="星空" width=10% height=10% title="" />
+    <hr color="green" width="300px" size="3px">
+    <!--用网络路径 只能用图片的地址 而不能用图片所在网络的地址-->
+    <img src="https://img.zcool.cn/community/01dcd059117b12a801216a3e9c4fd5.jpg@1280w_1l_2o_100sh.jpg" width="100">
+    <br>
+    <!--标签之链接-->
+    <a href="https://www.baidu.com">
+        <img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.SYPI-FZQhL1AQeniR3EfzQHaI_?w=178&h=216&c=7&r=0&o=5&pid=1.7"
+            alt="">
+    </a>
+    <br />
+    <a href="#section2">跳转到第二部分</a>
+    <!-- 在页面中的某个位置 -->
+    <br>
+    <a id="tips">有用的提示部分</a>
+    <br>
+    <a href="#tips">访问有用的提示部分</a>
+    <a href="https://www.runoob.com/html/html-links.html#tips">
+        访问有用的提示部分</a>
+    <a href="https://www.runoob.com/" style="color:red;" rel="nofollow ugc">只能使用"内联"方式</a>
+    <!--标签之文本-->
+    <br>
+    <strong>语气加重</strong>
+    <b>加粗</b>
+    <i>斜体</i>
+    <em>着重</em>
+    <del>删除</del>
+    <span>没有特殊含义的</span>
+    <!--有序无序列表 -->
+    <ol type="1">
+        <li>蔬菜
+            <ol type="A">
+                <li>萝卜</li>
+                <li>白菜</li>
+            </ol>
+        </li>
+        <li>肉类</li>
+    </ol>
+    <!--ul>li*3 type disc默认实心,circle空心 square小方块 none不显示 导航效果-->
+    <ul type="circle">
+        <li>苹果</li>
+        <li>香蕉</li>
+    </ul>
+
+    <ul class="nav" type="none">
+        <li><a href="#">导航1</a></li>
+        <li><a href="#">导航2</a></li>
+        <li><a href="#">导航3</a></li>
+    </ul>
+    <!--标签之表格 table>tr*2>td*3{}-->
+    <!--表格单元格合并 水平合并colspan 垂直合并rowspan-->
+    <h4><br>一列:</h4>
+    <table border="1">
+        <tr>
+            <td>100</td>
+        </tr>
+    </table>
+
+    <h4>一行三列:</h4>
+    <table border="1">
+        <tr>
+            <td>100</td>
+            <td>200</td>
+            <td>300</td>
+        </tr>
+    </table>
+
+    <h4>两行三列:</h4>
+    <table border="1" width=400px height=200px>
+        <tr>
+            <td colspan="2">100</td>
+            <td>300</td>
+        </tr>
+        <tr>
+            <td>400</td>
+            <td>500</td>
+            <td>600</td>
+        </tr>
+    </table>
+
+    <!--标签之表单 action 服务地址 method get/post name 表单名称  -->
+    <form action="url">
+        <input>
+        <input type="submit">
+    </form>
+
+
+    <form action="/" method="post">
+        <!-- 文本输入框 -->
+        <label for="name">用户名:</label>
+        <input type="text" id="name" name="name" required>
+
+        <br>
+
+        <!-- 密码输入框 -->
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+
+        <br>
+
+        <!-- 单选按钮 -->
+        <label>性别:</label>
+        <input type="radio" id="male" name="gender" value="male" checked>
+        <label for="male">男</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">女</label>
+
+        <br>
+
+        <!-- 复选框 -->
+        <input type="checkbox" id="subscribe" name="subscribe" checked>
+        <label for="subscribe">订阅推送信息</label>
+
+        <br>
+
+        <!-- 下拉列表 -->
+        <label for="country">国家:</label>
+        <select id="country" name="country">
+            <option value="cn">CN</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+        </select>
+
+        <br>
+
+        <!-- 提交按钮 -->
+        <input type="submit" value="提交">aa
+    </form>
+
+    <!--标签之块元素-->
+    <div id="container" style="width:500px">
+        <div id="header" style="background-color:#FFA500;">
+            <h1 style="margin-bottom:0;">主要的网页标题</h1>
+        </div>
+
+        <div id="menu" style="background-color:#FFD700;height:200px;width:100px;float:left;">
+            <b>菜单</b><br>
+            HTML<br>
+            CSS<br>
+            JavaScript
+        </div>
+
+        <div id="content" style="background-color:#EEEEEE;height:200px;width:400px;float:left;">
+            内容在这里
+        </div>
+
+        <div id="footer" style="background-color:#FFA500;clear:both;text-align:center;">
+            版权 © runoob.com
+        </div>
+
+    </div>
+    <!-- 弹性盒子模型 -->
+    <div class="container">
+        <div class="box1"></div>
+        <div class="box2"></div>
+        <div class="box3"></div>
+    </div>
+
+    <div class="box">图片</div>
+
+    <p>浮动元素会造成父元素高度塌陷</p>
+    <div class="div_float">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+    </div>
+    <div class="box1"></div>
+
+    <p>父元素设置高度</p>
+    <div class="div_float_height">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+    </div>
+    <div class="box1"></div>
+
+    <!-- 当盒子在里面时,依旧被遮挡 受影响的元素增加clear属性 -->
+    <p>受影响的元素增加clear属性</p>
+    <div class="div_float">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+        <div class="box_float_clear"></div>   
+    </div>
+
+    <!-- overflow清除浮动 如果有父级塌陷，并且同级元素也收到了影响 -->
+    <p>父级塌陷，并且同级元素也收到了影响</p>
+    <div class="div_float_overflow">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+    </div>
+    <div class="box1"></div>
+
+    <!-- 当盒子在里面时,依旧被遮挡 受影响的元素增加clear属性 -->
+    <div class="div_float_overflow">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+        <div class="box1"></div>
+    </div>
+
+    <p>伪对象方式</p>
+    <div class="div_float_display">
+        <img class="img" src="background.jpg" alt="">
+        <img class="img" src="photo.png" alt="">
+        <div class="box_float_clear"></div>
+    </div>
+    
+    <div class="div_relative">
+        <div class="box_index"></div>
+        <div class="box_position"></div>
+
+    </div>
+    <div class="div_fixed"></div>
+    
+    <iframe src="User_login.html" name="iframe_a"></iframe>
+    <p><a href="https://www.runoob.com" target="iframe_a" rel="noopener">RUNOOB.COM</a></p>
+    <a name="section2"></a>
+
+</body>
+
+</html>
