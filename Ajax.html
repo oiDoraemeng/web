@@ -3,18 +3,162 @@
 
 <head>
 	<meta charset="utf-8">
+	<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.6.8/axios.js"></script>
 	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<title>AJAX</title>
+</head>
 
 <body>
 
 	<h2>AJAX</h2>
-	<button type="button" onclick="loadXMLDoc()">请求数据</button>
-	<button type="button" >请求数据</button>
-	<div id="clickDiv"></div>
-	<div id="testDiv"> </div>
+	<div>
+		<button type="button" onclick="loadXMLDoc()">请求数据</button>
+	</div>
+
+	<div>
+		<button id="btn1" type="button">jquery get请求</button>
+		<button id="btn2" type="button">jquery post请求</button>
+		<button id="btn3" type="button">jquery ajax请求</button>
+	</div>
+
+	<div>
+		<button id="btn11" type="button">axios get请求</button>
+		<button id="btn22" type="button">axios post请求</button>
+		<button id="btn33" type="button">axios ajax请求</button>
+	</div>
+	<div>
+		<button id="btn111" type="button">fetch 请求数据</button>
+	</div>
+
+	<div id="phpDiv"></div>
+	<div id="clickDiv"> </div>
+	<div id="keydownDiv"> </div>
 
 	<script>
+		//fetch
+		const btn111 = document.getElementById("btn111");
+		btn111.addEventListener("click", function () {
+			fetch('http://localhost:8000/fetch', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+				},
+				body: 'a=100&b=200'
+			})
+				.then(function (response) {
+					return response.json();
+				})
+				.then(function (data) {
+					console.log(data);
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		});  
+
+
+
+		//axios
+		$(document).ready(function () { //页面加载完成后执行
+
+
+			$("#btn11").click(function () {
+				axios.get('http://localhost:8000/axios', {
+					params: { a: 100, b: 200 },
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+				})
+					.then(function (response) {//成功回调
+						console.log(response.data);
+					})
+					.catch(function (error) {//失败回调
+						console.log(error);
+					});
+			});
+
+			$("#btn22").click(function () {
+				axios.post('http://localhost:8000/axios', {
+
+					params: { a: 100, b: 200 },
+					//设置请求头
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+					// 请求体
+					data: { username: "admin", password: "123456" }
+
+				})
+					.then(function (response) {
+						console.log(response.data);
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			});
+
+			$("#btn33").click(function () {
+				axios({
+					method: 'post',
+					url: 'http://localhost:8000/axios',
+					params: { a: 100, b: 200 },
+					dataType: 'json',
+					data: { username: "admin", password: "123456" }
+				})
+					.then(function (response) {
+						console.log(response);
+						console.log(response.status)
+						console.log(response.statusText)
+						console.log(response.headers)
+						console.log(response.data);
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			});
+
+		});
+
+		//jquery
+		$(document).ready(function () { //页面加载完成后执行
+			$("#btn1").click(function () {
+				$.get('http://localhost:8000/jquery', { a: 100, b: 200 }, function (data) {
+					console.log(data);
+				}, 'json');
+			});
+
+			$("#btn2").click(function () {
+				$.post('http://localhost:8000/jquery', { a: 100, b: 200 }, function (data) {
+					console.log(data);
+				}, 'json');
+			});
+
+			$("#btn3").click(function () {
+				$.ajax({
+					url: 'http://localhost:8000/jquery',
+					type: 'POST',
+					data: { a: 100, b: 200 },
+					dataType: 'json',
+					success: function (data) {
+						console.log(data);
+					},
+					timeout: 2000, //超时时间
+					beforeSend: function () {
+						console.log("正在发送请求");
+					},
+					complete: function () {
+						console.log("请求完成");
+					},
+					error: function (xhr, status, error) {
+						console.log(xhr.status + " " + xhr.statusText + " " + error);
+					},
+					//自定义请求头
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+					}
+
+				});
+			});
+
+		});
+
+
 
 		function loadXMLDoc() {
 			var xmlhttp;
@@ -28,7 +172,7 @@
 			}
 			xmlhttp.onreadystatechange = function () {
 				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					document.getElementById("clickDiv").innerHTML = xmlhttp.responseText;
+					document.getElementById("phpDiv").innerHTML = xmlhttp.responseText;
 				}
 			}
 			xmlhttp.open("GET", "./test.php", true);
@@ -56,14 +200,14 @@
 						console.log(xhr.response)//获取响应数据
 
 						//将响应数据写入div元素	
-						document.getElementById("testDiv").innerHTML = xhr.response
+						document.getElementById("clickDiv").innerHTML = xhr.response
 					}
 				}
 			}
 			//发送请求
 			xhr.send()
 		})
-		
+
 		//防抖节流 
 		let xhr = null;
 		let isSending = false;
@@ -97,31 +241,13 @@
 						// console.log(data)//json数据
 						console.log(xhr.response)//字符串数据
 						//自动转换
-						document.getElementById("testDiv").innerHTML = xhr.response.name;
+						document.getElementById("keydownDiv").innerHTML = xhr.response.name;
 
 					}
 				}
 			}
 			xhr.send()
 		})
-
-		 //jquery
-		 $(document).ready(function () {
-			$("#btn").click(function () {
-				$.ajax({
-					url: "http://localhost:8000",
-					type: "GET",
-					dataType: "json",
-					success: function (data) {
-						console.log(data);
-						$("#testDiv").html(data.name);
-					},
-					error: function (xhr, status, error) {
-						console.log(xhr.status + " " + xhr.statusText + " " + error);
-					}
-				});
-			});
-		});	
 
 	</script>
 </body>
