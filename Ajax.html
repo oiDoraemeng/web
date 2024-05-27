@@ -12,7 +12,8 @@
 
 	<h2>AJAX</h2>
 	<div>
-		<button type="button" onclick="loadXMLDoc()">请求数据</button>
+		<button type="button" onclick="loadXMLDoc()">onclick 请求数据</button>
+		<button type="button" onclick="loadXMLDoc()"> 请求数据</button>
 	</div>
 
 	<div>
@@ -181,7 +182,7 @@
 
 		//异步请求
 		//获取按钮元素
-		const button = document.getElementsByTagName("button")[0]
+		const button = document.getElementsByTagName("button")[1]
 		//绑定点击事件
 		button.addEventListener("click", function () {
 			//创建XMLHttpRequest对象

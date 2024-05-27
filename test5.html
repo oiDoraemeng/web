@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聊天框</title>
+<style>
+    /* CSS样式 */
+    .chat-box {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #fff;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+    }
+    .chat-header-box {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        cursor: move;
+    }
+    .chat-content {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+    }
+    .chat-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+    }
+    .chat-textarea {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+    }
+    .chat-send {
+        margin-left: 10px;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div class="chat-box">
+    <div class="chat-header-box">在线咨询</div>
+    <div class="chat-content" id="chatContent"></div>
+    <div class="chat-input">
+        <textarea class="chat-textarea" id="chatInput" placeholder="点击输入内容..." maxlength="255"></textarea>
+        <button class="chat-send" id="sendBtn">发送</button>
+    </div>
+</div>
+
+<script>
+// JavaScript代码
+// 拖动聊天框功能
+var chatBox = document.querySelector('.chat-box');
+var chatHeader = document.querySelector('.chat-header-box');
+var isDragging = false;
+var offsetX, offsetY;
+
+chatHeader.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    offsetX = e.clientX - chatBox.getBoundingClientRect().left;
+    offsetY = e.clientY - chatBox.getBoundingClientRect().top;
+});
+
+document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        var x = e.clientX - offsetX;
+        var y = e.clientY - offsetY;
+        chatBox.style.left = x + 'px';
+        chatBox.style.top = y + 'px';
+    }
+});
+
+document.addEventListener('mouseup', function() {
+    isDragging = false;
+});
+
+// WebSocket连接
+var socket = new WebSocket('ws://localhost:8080/customer');
+
+// 当收到消息时的处理函数
+socket.onmessage = function(event) {
+    var chatContent = document.getElementById('chatContent');
+    var message = document.createElement('div');
+    // 创建包含客服消息的新div并添加到聊天内容中
+    message.textContent = '客服: ' + event.data;
+    chatContent.appendChild(message);
+};
+
+
+document.getElementById('sendBtn').addEventListener('click', function() {
+    var chatInput = document.getElementById('chatInput');
+    var message = chatInput.value;
+    if (message.trim() !== '') {
+        socket.send(message);
+        var chatContent = document.getElementById('chatContent');
+        var userMessage = document.createElement('div');
+        userMessage.textContent = '我: ' + message;
+        chatContent.appendChild(userMessage);
+        chatInput.value = '';
+    }
+});
+</script>
+
+</body>
+</html>

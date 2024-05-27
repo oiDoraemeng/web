@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线联系</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .pl_service2 {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 99;
+        }
+
+        .pl_service2 .service_item {
+            margin-bottom: 2px;
+            position: relative;
+            cursor: pointer;
+            background-color: #f3f3f3;
+            color: #999;
+            transition: all 0.5s ease;
+        }
+
+        .pl_service2 .service_item:hover {
+            background-color: #f35454;
+            color: #fff;
+        }
+
+        .pl_service2 .service_icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pl_service2 .service_icon .icon {
+            width: 50%;
+            height: 50%;
+            margin: 0;
+        }
+
+        .pl_service2 .service_value_con {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        .pl_service2 .service_value_con .iconSpan {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        .pl_service2 .service_item:hover .service_value_con {
+            opacity: 1;
+            width: 220px;
+            padding-right: 10px;
+        }
+
+        .pl_service2 .service_value {
+            width: 100%;
+            min-height: 20px;
+            line-height: 20px;
+            background-color: #f35454;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .pl_service2 .service_value.dh {
+            padding-left: 35px;
+        }
+
+        .pl_service2 .service_value p {
+            display: flex;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .pl_service2 .service_img {
+            width: 120px;
+            height: 120px;
+            padding: 10px;
+            position: absolute;
+            right: calc(100% + 223px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .pl_service2 .service_item:hover .service_img {
+            display: block;
+        }
+
+        .pl_service2 .service_img img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pl_service2 .service_value .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .pl_service2 .service_value::after {
+            content: " ";
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-left: 6px solid #f35454;
+            border-bottom: 6px solid transparent;
+        }
+    </style>
+    <style>
+        .chat-box {
+            background-color: #fff;
+            width: 360px;
+            box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2);
+            border-radius: 2px;
+            position: fixed;
+            z-index: 1000;
+            bottom: 6px;
+            right: 78px;
+            display: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'
+        }
+
+        .chat-header-box {
+            height: 32px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            align-items: center
+        }
+
+        .chat-header-box .chat-header-name {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 32px;
+            color: #595959
+        }
+
+        .chat-header-box .chat-header-close {
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+            color: #D9D9D9
+        }
+
+        .chat-content {
+            background-color: #EEE;
+            height: 338px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-bottom: 12px;
+            overflow-y: auto
+        }
+
+        .chat-content .chat-message-s {
+            margin-top: 12px
+        }
+
+        .chat-content .chat-message-s .chat-time {
+            font-size: 12px;
+            vertical-align: top;
+            line-height: 24px;
+            color: #999
+        }
+
+        .chat-content .chat-message-s .chat-message-time .chat-avatar {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            margin-right: 4px
+        }
+
+        .chat-content .chat-message-s .chat-right .chat-avatar {
+            margin-left: 4px;
+            margin-right: 0
+        }
+
+        .chat-content .chat-message-area {
+            padding-left: 30px
+        }
+
+        .chat-content .chat-message-text {
+            color: #595959;
+            text-align: left;
+            display: inline-block;
+            padding: 8px;
+            background-color: #fff;
+            border-radius: 8px;
+            max-width: 288px;
+            word-break: break-all;
+            word-wrap: break-word;
+            font-size: 14px
+        }
+
+        .chat-content .chat-right {
+            text-align: right
+        }
+
+        .chat-content .chat-message-area.chat-right {
+            padding-right: 32px
+        }
+
+        .chat-content .chat-message-area.chat-right .chat-message-text {
+            background-color: #D9D9D9
+        }
+
+        .chat-status {
+            font-size: 12px;
+            padding-left: 24px;
+            padding-bottom: 2px;
+            color: #999;
+            background-color: #EEE
+        }
+
+        .chat-content::-webkit-scrollbar,
+        .chat-emoji-content::-webkit-scrollbar,
+        .chat-textarea::-webkit-scrollbar {
+            width: 6px;
+            height: 1px
+        }
+
+        .chat-content::-webkit-scrollbar-thumb,
+        .chat-emoji-content::-webkit-scrollbar-thumb,
+        .chat-textarea::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .2);
+            background: #B2B2B2
+        }
+
+        .chat-content::-webkit-scrollbar-track,
+        .chat-emoji-content::-webkit-scrollbar-track,
+        .chat-textarea::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, .2);
+            border-radius: 10px;
+            background: #EDEDED
+        }
+
+        .chat-input {
+            display: flex;
+            flex-direction: column
+        }
+
+        .chat-input .chat-emoji-img-box {
+            height: 32px
+        }
+
+        .chat-input .chat-emoji-img-box:focus {
+            outline: 0
+        }
+
+        .chat-input .chat-emoji {
+            position: relative
+        }
+
+        .chat-input .chat-emoji-img {
+            width: 16px;
+            margin: 8px 16px
+        }
+
+        .chat-input .chat-emoji-img:hover {
+            cursor: pointer
+        }
+
+        .chat-input .chat-emoji-content {
+            box-sizing: content-box;
+            display: none;
+            max-width: 216px;
+            height: 98px;
+            box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2);
+            padding: 12px 12px 6px;
+            background-color: #fff;
+            position: absolute;
+            top: -118px;
+            overflow-y: auto
+        }
+
+        .chat-input .chat-emoji-content .chat-emoji-Item {
+            cursor: pointer;
+            display: inline-block;
+            padding: 1px
+        }
+
+        .chat-input .chat-textarea {
+            box-sizing: border-box;
+            padding-left: 16px;
+            outline: 0;
+            border: none;
+            resize: none;
+            width: 98%;
+            height: 95px;
+            overflow-y: auto;
+            font-size: 14px;
+            font-weight: 400;
+            color: #595959;
+            line-height: 22px
+        }
+
+        .chat-input .chat-textarea::placeholder {
+            font-size: 14px;
+            font-weight: 400;
+            color: #BFBFBF
+        }
+
+        .chat-input .chat-send-box {
+            text-align: right;
+            position: relative
+        }
+
+        .chat-input .chat-send-box .chat-send {
+            display: inline-block;
+            height: 24px;
+            line-height: 24px;
+            vertical-align: middle
+        }
+
+        .chat-input .chat-send-box .chat-send-content-default .chat-send-img-default {
+            opacity: 1
+        }
+
+        .chat-input .chat-send-box .chat-send-content-default {
+            display: inline-block;
+            margin-right: 16px;
+            margin-bottom: 8px;
+            padding-left: 8px;
+            cursor: not-allowed;
+            padding-right: 8px;
+            background-color: #eee;
+            font-size: 13px;
+            color: #bfbfbf;
+            border: 1px solid #D9D9D9;
+            border-radius: 2px
+        }
+
+        .chat-input .chat-send-box .chat-send-content-default.active {
+            cursor: pointer;
+            background-color: #fff;
+            border-color: #d9d9d9;
+            color: #595959
+        }
+
+        .chat-input .chat-send-box .chat-send-img-default {
+            width: 14px;
+            height: auto;
+            vertical-align: middle;
+            margin-right: 8px
+        }
+
+        .chat-input .chat-send-box .chat-text-popver {
+            position: absolute;
+            width: 136px;
+            height: 36px;
+            background: #FFF;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .15);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #595959;
+            bottom: 46px;
+            right: 16px;
+            text-align: center;
+            line-height: 36px;
+            z-index: 99;
+            display: none
+        }
+
+        .chat-input .chat-send-box .chat-text-popver.active {
+            display: block
+        }
+
+        .chat-input .chat-send-box .chat-text-popver::after {
+            display: block;
+            content: '';
+            border-width: 7px 8px;
+            border-style: solid;
+            border-color: #fff transparent transparent;
+            position: absolute;
+            left: 65%;
+            bottom: -14px;
+            z-index: 99
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contact-sidebar">
+        <button id="contact-button">联系我们</button>
+    </div>
+
+    <div id="contact-form" class="contact-form hidden">
+        <div class="form-header">
+            <h2>联系我们</h2>
+            <button id="close-button">×</button>
+        </div>
+        <form>
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">电子邮件:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">信息:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">发送</button>
+        </form>
+    </div>
+    <div class="pl_service2" id="service1716622449358">
+        <div class="service_item">
+            <div class="service_icon"><svg t="1631600028416" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="5934" width="128" height="128">
+                    <path
+                        d="M515.7657664 787.44674027c4.65754453 0 9.4002272-0.28488853 14.1701984-0.85357334 45.7491552-5.49037867 84.59767893-37.46665067 98.93815467-81.5337632 1.07952-3.29968533-0.4824544-6.82749867-3.634784-8.2781376-3.1239488-1.45063893-6.90063147-0.19865813-8.661264 2.7593792-0.1702784 0.28488853-18.34528747 29.64368-89.11223254 39.20217814-10.59217387 1.4222592-20.90055147 2.16231467-30.6697152 2.16231466-49.58259627-0.02837973-71.67618667-18.71858987-71.8748448-18.88995946-2.49850453-2.21907413-6.30465813-2.27583253-8.85992106-0.11351894-2.58364373 2.16231467-3.18070827 5.91716587-1.42007574 8.7911552C436.22403947 765.68388267 474.95795307 787.44674027 515.7657664 787.44674027zM896.26976107 348.88335467c-0.62544427 0-1.19303893 0.11351893-1.78901227 0.11351893C853.0191104 169.48658987 694.58729707 35.5791968 504.63437867 35.5791968c-195.17805653 0-357.2446528 141.3046688-393.16897707 328.2395168-34.9288512 6.2871936-61.50970773 36.98310507-61.50970773 74.10919893l0 148.5873344c0 41.64828907 33.39634773 75.416848 74.62985706 75.416848 23.25824853 0 43.78986453-10.98075733 57.4492288-27.85139306 32.99684907 87.277376 100.1835872 157.6568288 185.2025952 194.78401493 0.2041152-0.44315947 1.81411733-3.5714752 3.74830187-6.0645216 1.34148587-1.72897813 2.83796907-3.14905387 4.12597013-3.14905387 1.33493653 0 2.5563552 0.48354667 3.60640427 1.22360107-19.68022507-14.6515616-90.75934613-89.95489067-106.1509632-195.0437984-6.7587328-46.25780587 27.88632213-91.6609472 68.2400608-99.17174187 64.7755552-12.0624608 129.21055467-25.80259733 193.98610987-37.63692906 41.17674987-7.51079467 69.3195808-30.09884587 86.5285888-67.7073952 4.0320992-8.7911552 9.85430187-26.57103253 12.524176-52.20335147 0.70949227-3.81161067 3.83344107-6.74235947 7.8382528-6.74235947 2.66987413 0 4.9413408 1.36549973 6.44655573 3.32806507l1.78901227-1.10899093c25.52971627 37.0682432 76.1634528 119.14231253 83.43301973 205.6829088 8.34908693 98.944704 3.69154347 166.70885973-72.04512213 236.03826346-0.0851392 0.0851392-0.19865813 0.19865813-0.31217707 0.28488854-1.05114027 1.13737067-1.67549333 2.61748053-1.67549333 4.23839786 0 2.13393493 1.13627947 3.95460053 2.78339306 5.06359147 0.62435307 0.2565088 1.2497984 0.59706453 1.87415147 0.85357333 0.51083413 0.11351893 0.9932896 0.28488853 1.50521493 0.28488854 0.5119264 0 0.96600107-0.1702784 1.42007574-0.28488854 1.07952-0.56868587 2.10118827-1.22360107 3.15232853-1.79228693 76.58914773-42.1896864 135.34384213-112.65646187 162.49229227-197.4047712 10.98949013 16.3292384 28.19849813 28.07843093 48.19090026 32.17493013-32.0614112 145.8279552-162.12335573 237.09049493-323.25342293 250.94524267-9.6556448-23.953552-33.42472747-40.96608533-61.33942933-40.96608533-36.46244693 0-66.0253536 28.8752448-66.0253536 64.4644704s29.56181547 64.43609067 66.0253536 64.43609066c29.39153707 0 54.01310293-18.88995947 62.560848-44.83445546 186.51679253-15.163488 336.03192533-126.02766293 367.2419456-298.28365974 27.57414507-11.52215467 46.94110187-38.57673387 46.94110186-70.1545984L972.88947093 424.98349867C972.88728853 382.96518187 938.58169813 348.88335467 896.26976107 348.88335467zM827.4610144 392.06851307C778.81603947 260.29505493 652.7578144 166.1585248 504.46410027 166.1585248c-147.66936107 0-273.2724192 93.3397152-322.37256107 224.2596-2.44174507-2.98750827-5.31027733-5.54713813-8.12204907-8.13623893C201.77067307 222.74217387 339.07489707 101.43754667 504.63437867 101.43754667c164.76485013 0 301.642288 120.1094048 330.35271253 278.54012693C832.14693867 383.79037547 829.533824 387.7733568 827.4610144 392.06851307zM367.24501547 828.86799253c-0.00327467-0.0010912-0.00545813-0.00218347-0.00873174-0.00327466C367.20572053 828.93348373 367.20462933 828.94221653 367.24501547 828.86799253z"
+                        p-id="5935"></path>
+                </svg></>
+                <div class="service_value_con">
+                    <div class="service_value">
+                        <p><span>客服热线:</span><span><a href="tel:027-81812488">027-81812488</a></span></p>
+                        <p><span>服务时间:</span><span>9:00 - 17:00</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="service_group">
+                <div class="service_item">
+                    <p class="service_icon"><svg t="1631600011853" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="5803" width="128" height="128">
+                            <path
+                                d="M983.899806 785.385782V224.886223h0.180631l-0.180631-4.696419c-0.180632-5.238314-0.722526-10.476627-1.806315-15.714941-2.890104-25.469042-21.675781-44.977245-45.519139-47.686717H122.287529c-11.741048 0-23.482096 1.625684-34.861881 5.238314-30.346093 10.295996-50.757453 40.100194-50.576821 74.058917v534.849885c-0.361263 21.314518 5.780208 42.087141 17.701887 59.789028l0.361263 0.722526 5.418946 3.973893c18.243782 21.856412 44.977245 34.319986 73.517022 34.500618H904.421944c37.751984 0 70.265655-27.094726 79.477862-66.291763l0.180631-0.541894c0.361263-5.96084 0.361263-11.741048-0.180631-17.701888zM390.16405 547.494091l55.453872 49.854295 43.893456 40.100194c5.418945 5.96084 13.005468 9.57347 21.133886 9.57347 7.947786 0 15.534309-3.431999 21.133886-9.57347l101.153642-91.941436 272.753572 263.721997H126.622685L390.16405 547.494091z m120.119951 30.346092L111.449638 216.03528H115.604163c214.409596-0.903158 703.559711-2.890104 793.875463-0.361263l-399.195625 362.166166z m165.458458-69.72376l251.619686-227.956959v474.518963L675.742459 508.116423z m-328.568707 0.180631L93.205856 760.278003V278.895043l253.967896 229.402011z"
+                                p-id="5804"></path>
+                        </svg></p>
+                    <div class="service_value_con">
+                        <div class="service_value dh">
+                            <a class="p_doThirdFunc" href="mailto:support@oebio.com" target="">
+                                <span class="iconSpan"><svg t="1631600011853" class="icon" viewBox="0 0 1024 1024"
+                                        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5803" width="128"
+                                        height="128">
+                                        <path
+                                            d="M983.899806 785.385782V224.886223h0.180631l-0.180631-4.696419c-0.180632-5.238314-0.722526-10.476627-1.806315-15.714941-2.890104-25.469042-21.675781-44.977245-45.519139-47.686717H122.287529c-11.741048 0-23.482096 1.625684-34.861881 5.238314-30.346093 10.295996-50.757453 40.100194-50.576821 74.058917v534.849885c-0.361263 21.314518 5.780208 42.087141 17.701887 59.789028l0.361263 0.722526 5.418946 3.973893c18.243782 21.856412 44.977245 34.319986 73.517022 34.500618H904.421944c37.751984 0 70.265655-27.094726 79.477862-66.291763l0.180631-0.541894c0.361263-5.96084 0.361263-11.741048-0.180631-17.701888zM390.16405 547.494091l55.453872 49.854295 43.893456 40.100194c5.418945 5.96084 13.005468 9.57347 21.133886 9.57347 7.947786 0 15.534309-3.431999 21.133886-9.57347l101.153642-91.941436 272.753572 263.721997H126.622685L390.16405 547.494091z m120.119951 30.346092L111.449638 216.03528H115.604163c214.409596-0.903158 703.559711-2.890104 793.875463-0.361263l-399.195625 362.166166z m165.458458-69.72376l251.619686-227.956959v474.518963L675.742459 508.116423z m-328.568707 0.180631L93.205856 760.278003V278.895043l253.967896 229.402011z"
+                                            p-id="5804"></path>
+                                    </svg></span>
+                                <span>support@oebio.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="service_item">
+                    <p class="service_icon"><svg t="1631599980856" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="5541" width="128" height="128">
+                            <path
+                                d="M506.942 345.921c25.259 0 42.134-16.916 42.134-42.107 0-25.477-16.848-41.956-42.134-41.956-25.299 0-50.668 16.48-50.668 41.956 0.028 25.204 25.409 42.107 50.668 42.107z m0 0z m-235.685-84.064c-25.259 0-50.79 16.48-50.79 41.956 0 25.19 25.532 42.107 50.79 42.107 25.163 0 42.012-16.916 42.012-42.107-0.014-25.477-16.834-41.956-42.012-41.956z m0 0z m739.397 353.635c0-133.202-123.563-246.702-275.237-258.512 0.205-1.652 0.301-3.373-0.068-5.092-30.406-141.79-182.886-248.695-354.7-248.695-194.15 0-352.119 135.387-352.119 301.793 0 89.279 45.574 169.725 131.946 233.158l-30.106 90.508a15.42 15.42 0 0 0 4.506 16.452 15.435 15.435 0 0 0 10.076 3.741c2.335 0 4.697-0.546 6.867-1.625l113.036-56.565 13.926 2.827c34.802 7.154 64.853 13.353 101.868 13.353 10.895 0 40.878-3.987 43.404-7.182 40.755 101.99 153.094 175.61 285.273 175.61 33.86 0 68.13-8.164 98.891-15.866l87.136 47.636c2.307 1.257 4.847 1.911 7.359 1.911 3.441 0 6.881-1.161 9.639-3.413 4.847-3.932 6.841-10.404 5.038-16.33L895.134 815.2c74.602-58.955 115.521-129.488 115.521-199.708zM409.798 665.75a338.345 338.345 0 0 1-29.082 1.243c-32.686 0-60.334-5.652-92.31-12.26l-18.582-3.755a14.266 14.266 0 0 0-9.503 1.269l-81.687 40.892 21.231-63.775c2.076-6.24-0.205-13.053-5.57-16.821-82.07-57.207-123.659-126.894-123.659-207.093 0-144.179 139.087-261.516 310.067-261.516 151.142 0 284.959 91.955 312.579 214.261-158.475 2.076-286.706 113.487-286.706 250.32 0 19.893 3.018 39.171 8.11 57.767-1.542-0.382-3.168-0.683-4.887-0.532z m450.573 122.949c-4.875 3.673-6.935 10.007-5.188 15.852l13.804 45.903-56.647-30.993a14.577 14.577 0 0 0-7.004-1.803c-1.188 0-2.389 0.15-3.564 0.464-30.379 7.674-61.822 15.593-92.433 15.593-142.186 0-257.857-97.717-257.857-217.811 0-120.095 115.658-217.771 257.857-217.771 139.469 0 257.325 99.724 257.325 217.771 0 59.87-37.738 121.255-106.291 172.797z m7.81 8.479zM616.454 506.006c-16.848 0-33.696 16.971-33.696 33.792 0 16.944 16.848 33.669 33.696 33.669 25.313 0 42.038-16.725 42.038-33.669 0-16.848-16.725-33.792-42.038-33.792z m0 0z m185.126 0c-16.603 0-33.451 16.971-33.451 33.792 0 16.944 16.848 33.669 33.451 33.669 25.231 0 42.257-16.725 42.257-33.669 0-16.848-16.998-33.792-42.257-33.792z m0 0z"
+                                p-id="5542"></path>
+                        </svg></p>
+                    <div class="service_value_con">
+                        <div class="service_value dh">
+                            <p class="p_doThirdFunc" type="6" account="微信客服"
+                                img="portal-saas/new2022081918121270782/cms/image/b95388af-dd70-4a0e-882a-18781421958f.jpg">
+
+                                <span class="iconSpan"><svg t="1631599980856" class="icon" viewBox="0 0 1024 1024"
+                                        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5541" width="128"
+                                        height="128">
+                                        <path
+                                            d="M506.942 345.921c25.259 0 42.134-16.916 42.134-42.107 0-25.477-16.848-41.956-42.134-41.956-25.299 0-50.668 16.48-50.668 41.956 0.028 25.204 25.409 42.107 50.668 42.107z m0 0z m-235.685-84.064c-25.259 0-50.79 16.48-50.79 41.956 0 25.19 25.532 42.107 50.79 42.107 25.163 0 42.012-16.916 42.012-42.107-0.014-25.477-16.834-41.956-42.012-41.956z m0 0z m739.397 353.635c0-133.202-123.563-246.702-275.237-258.512 0.205-1.652 0.301-3.373-0.068-5.092-30.406-141.79-182.886-248.695-354.7-248.695-194.15 0-352.119 135.387-352.119 301.793 0 89.279 45.574 169.725 131.946 233.158l-30.106 90.508a15.42 15.42 0 0 0 4.506 16.452 15.435 15.435 0 0 0 10.076 3.741c2.335 0 4.697-0.546 6.867-1.625l113.036-56.565 13.926 2.827c34.802 7.154 64.853 13.353 101.868 13.353 10.895 0 40.878-3.987 43.404-7.182 40.755 101.99 153.094 175.61 285.273 175.61 33.86 0 68.13-8.164 98.891-15.866l87.136 47.636c2.307 1.257 4.847 1.911 7.359 1.911 3.441 0 6.881-1.161 9.639-3.413 4.847-3.932 6.841-10.404 5.038-16.33L895.134 815.2c74.602-58.955 115.521-129.488 115.521-199.708zM409.798 665.75a338.345 338.345 0 0 1-29.082 1.243c-32.686 0-60.334-5.652-92.31-12.26l-18.582-3.755a14.266 14.266 0 0 0-9.503 1.269l-81.687 40.892 21.231-63.775c2.076-6.24-0.205-13.053-5.57-16.821-82.07-57.207-123.659-126.894-123.659-207.093 0-144.179 139.087-261.516 310.067-261.516 151.142 0 284.959 91.955 312.579 214.261-158.475 2.076-286.706 113.487-286.706 250.32 0 19.893 3.018 39.171 8.11 57.767-1.542-0.382-3.168-0.683-4.887-0.532z m450.573 122.949c-4.875 3.673-6.935 10.007-5.188 15.852l13.804 45.903-56.647-30.993a14.577 14.577 0 0 0-7.004-1.803c-1.188 0-2.389 0.15-3.564 0.464-30.379 7.674-61.822 15.593-92.433 15.593-142.186 0-257.857-97.717-257.857-217.811 0-120.095 115.658-217.771 257.857-217.771 139.469 0 257.325 99.724 257.325 217.771 0 59.87-37.738 121.255-106.291 172.797z m7.81 8.479zM616.454 506.006c-16.848 0-33.696 16.971-33.696 33.792 0 16.944 16.848 33.669 33.696 33.669 25.313 0 42.038-16.725 42.038-33.669 0-16.848-16.725-33.792-42.038-33.792z m0 0z m185.126 0c-16.603 0-33.451 16.971-33.451 33.792 0 16.944 16.848 33.669 33.451 33.669 25.231 0 42.257-16.725 42.257-33.669 0-16.848-16.998-33.792-42.257-33.792z m0 0z"
+                                            p-id="5542"></path>
+                                    </svg></span>
+                                <span>微信客服</span>
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="service_img">
+                        <img src="https://omo-oss-image.thefastimg.com/portal-saas/new2022081918121270782/cms/image/b95388af-dd70-4a0e-882a-18781421958f.jpg"
+                            alt="微信客服">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chat-box" style="display: block;">
+        <div class="chat-header-box">
+            <div class="chat-header-name">在线咨询</div><img class="chat-header-close"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAGKADAAQAAAABAAAAGAAAAADiNXWtAAABS0lEQVRIDbWUPQqDQBCFXbGws8odAh4hIJgb5Aoey8IrWKUWAjlCwDukSXrBzBOVVXdmRyQLiWZ+vreZnVlTluU9CIIkiqJbURRvej+8qqo6dV1XE+gb0lfS9/2FDA0cR+kjvAET7BA7N8a8yJAeFbHgKZgDGzt2OPK95eIYZioJFzD5paeUOwsAIAVyAr6chcBeER8cvI2AVkQDZwV8Ilq4KMCJwI52RluPrSh2nLNEgExrtdsWdoKfNXDEegUQNIo8AB6SjGlpiDLNrOCq+OvyClglQllafPBPtNeKKGDBpwPNUBrUH4esEWHPwAGfu0XyrevtFNAANDEQ2whoE5GsiV0IaBIAtpcvZxbwBdrQ9buUOwhIAWsY95tjGM7BgSS7ixVSL9foae3dIgng6qA5ya05qTFoXzI84dDcLZIAfGDEcXwFkzb++QGB393GOhpbyAAAAABJRU5ErkJggg==">
+        </div>
+        <div class="chat-content">
+            <div class="chat-message-s">
+                <div class="chat-message-time"><img class="chat-avatar"
+                        src="data:image/png;base64,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"><span
+                        class="chat-time">在线客服 2024-05-25 17:57:06</span></div>
+                <div class="chat-message-area"><span class="chat-message-text">您好，请问有什么可以帮助您的？</span></div>
+            </div>
+            <div class="chat-message-s" data-relingo-parsed="true">
+                <div class="chat-message-time" data-relingo-block="true"><img class="chat-avatar"
+                        src="data:image/png;base64,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"><span
+                        class="chat-time">在线客服 2024-05-25 17:57:08</span></div>
+                <div class="chat-message-area" data-relingo-block="true"><span
+                        class="chat-message-text">您好,当前在线客服不在线，您可以留下电话，稍后我们会安排专人与您电话沟通</span></div>
+            </div>
+            <div class="chat-message-s" data-relingo-parsed="true">
+                <div class="chat-message-time" data-relingo-block="true"><img class="chat-avatar"
+                        src="data:image/png;base64,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"><span
+                        class="chat-time">在线客服 2024-05-25 17:57:10</span></div>
+                <div class="chat-message-area" data-relingo-block="true"><span
+                        class="chat-message-text">您也可以添加客服微信wy15392850237,我们会在一个工作日内给您答复</span></div>
+            </div>
+        </div>
+        <div class="chat-status"></div>
+        <div class="chat-input">
+            <div class="chat-emoji">
+                <div class="chat-emoji-img-box" tabindex="0"><img class="chat-emoji-img"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEM0lEQVRYR8VXTWhcVRT+zp2ZJJAfnIUWInRT0lm5kbowtP5WRYu0xoW8+yY/hnRni2gTBLWORoUmKtJKNoaYn7n34SJqERX/W6V2YenG1UxwU1CRgso0ISYzc4/ccV59M5mZN3EKefBmMe/cc757zne+ey5hhx9qNn4qlRIrKyt3MvMRZt4HoLf8Whe/2peILhHRR319fRdTqZRpxncogJGRkY6NjY1jRHSCmW9pximA3wG82d7efmZ+fv7vRmsaAnBd9zFmfpuZd5edZIUQZ5n5i2g0eqWrq8vuHKurq72FQmE3ET1ojDkMYK/9n4iuENHTSqkP64GoCYCZyXXdl5n5xbKjy0Q0oZT6upkMuK57PzNPMfPt5fWTSqmXiIir128BYINLKRUAB0BBCPFMOp1+p9biRmCsn2Qy+ZQx5i0AUQCe1tqt9rMFgJRykplfIKK/IpHI40tLS980s+t6NoODg/cVi8VlZr6JiCa11ieDthUAbM2NMR/YnUej0YdaDe4HsiAKhcLnNhNCiIEgJ64DsGzf3NzMWMIJIY4rpc60svPqta7rHjPGnLbEbGtrS/jdcR2A4zjjAKaI6LJSat92ax4GtkzsS2ViTnieN10iqP2xIpPNZn+zfS6EOFiL7Y7jvA7A6sFprfXztQKG2UgpDzLzl1YnEolErxWrEgDHcfYD+B5A1vO8RB3n1wB02bb3PK+7BZuM1QkhxH6l1IUSACnlNDOfEEJMK6UmajmXUr7GzMcbZaAZG9d1p4wx40T0htZ63M/AtwDuIaIHtNZfhdWzle+BMpzzPO9eH0ApLbFYLLG4uJhtJUDY2qGhob35fN7GK5XbB1Cqbzwe756ZmVn1nUgpP2HmR8KcNjxsiD7VWh/ybUZHR7vX19dzPpd8DuSYubsagOM4PvFawVBBWh8AEV3TWvc0LIHjOKXSAOj3PO/idlAkk8n+YrF4obqz6pWgJgmllO8y8xgRndJaP7cdAI7jnAIwQUSzWuujgbL6WvAfCeu1YYCxVzs7O2+bnZ21g0boMzY2tmttbe0nADdXd1a9NqwrRFLK88x8FxF9ppQ6FCbRZcm15H2YiL7TWt8dROyXtUKIGknx8PDwnnw+/yMzx4louaOj48m5uTlLzi2P67o9zPweMw8Q0Z+xWOyOhYWFn2ukv1KKy3Jc9zBKJpMHjDF2FIsDuGrVUAjxcU9PT8l5LpfbY4x51CqlTTuAPyKRyJF0Om3lvfQ0PIysQdhxLKXsA2BJWZHS6jQQ0XkAR7XWK8FvocexNZZSDjDzcqOBxBITwBMADjDzrXYdEf1SPszeryXlTQ0kgTrt3Ejm12pHh9IAYV6xw2k5xa2O5a8qpU42NZZXEWdnLiZBEP7VDMCzAHaFyuC/BjfmahYMZsUqk8n0E9HhRpdTZj6bSCR+uGGX0yZ3/L/N/gErKcY/gmG9bQAAAABJRU5ErkJggg==">
+                </div>
+                <div class="chat-emoji-content"><span class="chat-emoji-Item">😁</span><span
+                        class="chat-emoji-Item">😂</span><span class="chat-emoji-Item">😃</span><span
+                        class="chat-emoji-Item">😄</span><span class="chat-emoji-Item">😅</span><span
+                        class="chat-emoji-Item">😆</span><span class="chat-emoji-Item">😉</span><span
+                        class="chat-emoji-Item">😊</span><span class="chat-emoji-Item">😋</span><span
+                        class="chat-emoji-Item">😌</span><span class="chat-emoji-Item">😍</span><span
+                        class="chat-emoji-Item">😏</span><span class="chat-emoji-Item">😒</span><span
+                        class="chat-emoji-Item">😓</span><span class="chat-emoji-Item">😔</span><span
+                        class="chat-emoji-Item">😖</span><span class="chat-emoji-Item">😘</span><span
+                        class="chat-emoji-Item">😚</span><span class="chat-emoji-Item">😜</span><span
+                        class="chat-emoji-Item">😝</span><span class="chat-emoji-Item">😞</span><span
+                        class="chat-emoji-Item">😠</span><span class="chat-emoji-Item">😡</span><span
+                        class="chat-emoji-Item">😢</span><span class="chat-emoji-Item">😭</span><span
+                        class="chat-emoji-Item">😫</span><span class="chat-emoji-Item">😪</span><span
+                        class="chat-emoji-Item">😩</span><span class="chat-emoji-Item">😨</span><span
+                        class="chat-emoji-Item">😥</span><span class="chat-emoji-Item">😤</span><span
+                        class="chat-emoji-Item">😣</span></div>
+            </div><textarea class="chat-textarea" placeholder="点击输入内容..." maxlength="255"></textarea>
+            <div class="chat-send-box">
+                <div class="chat-send-content-default"><img class="chat-send-img-default"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAHKADAAQAAAABAAAAHAAAAABkvfSiAAAD+klEQVRIDb2WW0iTYRjHmzozZgUWHaAuiijKIoVF4nlFGBF1EXVRRBcpeKGVSSUUVBBlCZ0IkQ6EUTdFUXRTSjgdjiIzFkgJhXRRZJZaHre5rd/z9b3r85vi1umF53uf9zn8/+/7vIfNMukftJaWlukDAwPFoVAoF/gAUpWfn+8SKot8/lZraGiYY7FYysATsmkKF9twQkJCWnZ2dnuCMv5JD9EiQA9AsguZLFiMXyPnGW9GNoyMjGzHfPSPCBsbG9ODweAhgLcCGqdP+hnj03l5effpQ06nM0ufQFD63yJkRfnkVkBWICCQyYrqUCvZqwaxGdo60YlxSx81IQkWZruZnApktSTTAhDdRSpZ0cufpl9fl8u1klLOxT9EvnZoJiTkxFn7+vp2UL6DQC3V4byA1AIip+/tL4rRWiAQ0CqA1elwOIbFOy6hx+Ox9fb2Fvb395cTNx9wKdt39Br0cxB9EoAJmkZI3mMVF0HodrtT/H5/aXd3dylBM/TATpIuJCcnV9vt9m8qWfVNTU3L2M9zTOQhK7kkdplwT09Ptujx8fGPpJcWJuQgzIuLiyv3er1F2G3ihKSDrgqg66xIK4nYjY1Sb4LsJjFTiffi0wiZsAM9EXkv90/laISQFRJcTaJVHOiv6OQg3EaXlyKiQWCB7Aj9cdFpLqvVWqgCmXwBeIIVLqf4NEKM6SQpsi7GpZA1qWRzL+XixNZi3yI+wGtsNtseyu1XseCtF91MqD1tbW1tiV1dXfvwHyZQe5IIvE3ti3NycnoUiPSsagExD5AVxPiREiZ32RjDdVjIdXiHb4R9n2ncd+11SE1N9bFHZ5KSkhaTeI3AIIDbONYlRiAOx1rK9FzIsHeyMoeZTOIN1+GpkUx86jkSfVJGRkYnp0z20w5YJXtyQ3PwYWV7AZL9kJP7ArHn5uY200c0JqReoFH7J4FR/VqwX2WAnNWRb9EXqous28KdPBTc3a/ET8W4iriWsBMlfC2MxjH0jWJj5XLh94/hD5sGBwczhYzYL5S7NezQlVElNTvNY4AiAMwx7LF6zurlLJj9MREak9nT9Obm5llGm66r5yz8uhhjfosQst2spJUnsIP9PSl/KQRUn0A6Kwvhl5+riBbtoXlCOdeQvZPT60F/hkxRaBB0Mz7FuBe5gng4LGnKb+xjXWEyM78jZJDUQb6F/g3jFECr0NUDMGY5hThWwmPkLAH4I3d0J6fwHrIcWxHyAWJVsXEJo70W4GltNt8AK9uelZX1WSyQy+N+lZ+1Wz6frwjSRMrpFN9YLVZCwTjGC9NoBsvMzBzCdtFsN4+jJfRJIqupp4QnzSCxjKMihOgUpWpHTqBHXOZYCP977A8mW9POb5QTTAAAAABJRU5ErkJggg=="><span
+                        class="chat-send chat-send-default">发送</span></div>
+                <div class="chat-text-popver">不能发送空白消息</div>
+            </div>
+        </div>
+    </div>
+<script>
+    
+// JavaScript代码
+// 获取聊天框元素
+var chatBox = document.querySelector('.chat-box');
+
+// 使聊天框可拖动
+var isDragging = false;
+var offsetX, offsetY;
+
+chatBox.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    offsetX = e.clientX - chatBox.getBoundingClientRect().left;
+    offsetY = e.clientY - chatBox.getBoundingClientRect().top;
+});
+
+document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        var x = e.clientX - offsetX;
+        var y = e.clientY - offsetY;
+        chatBox.style.left = x + 'px';
+        chatBox.style.top = y + 'px';
+    }
+});
+
+document.addEventListener('mouseup', function() {
+    isDragging = false;
+});
+</script>
+</script>
+</body>
+
+</html>
