@@ -13,7 +13,7 @@
 	<h2>AJAX</h2>
 	<div>
 		<button type="button" onclick="loadXMLDoc()">onclick 请求数据</button>
-		<button type="button" onclick="loadXMLDoc()"> 请求数据</button>
+		<button type="button"> 请求数据</button>
 	</div>
 
 	<div>
@@ -214,7 +214,7 @@
 		let isSending = false;
 		//绑定键盘事件
 		document.addEventListener("keydown", function (event) {
-			//判断标识变量
+			//判断标识变量	
 			if (isSending) xhr.abort(); //取消请求 
 			xhr = new XMLHttpRequest();
 			isSending = true;
